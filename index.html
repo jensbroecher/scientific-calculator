@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#0d1117" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>Scientific / Graphing Calculator</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app" id="app">
+    <header class="status-bar" aria-live="polite">
+      <div class="mode-switch" role="tablist" aria-label="Calculator mode">
+        <button type="button" class="mode-btn is-active" role="tab" id="mode-calc" aria-selected="true" data-mode="calc">Calc</button>
+        <button type="button" class="mode-btn" role="tab" id="mode-graph" aria-selected="false" data-mode="graph">Graph</button>
+      </div>
+      <button type="button" class="status-item status-btn" id="angle-mode" title="Toggle angle mode">DEG</button>
+      <span class="status-item memory-ind" id="memory-ind" hidden title="Memory">M</span>
+      <span class="status-item second-ind" id="second-ind" hidden title="2nd functions">2nd</span>
+      <span class="status-spacer"></span>
+      <button type="button" class="history-toggle" id="history-toggle" aria-label="Show history" aria-expanded="false">☰</button>
+    </header>
+
+    <div class="calc-mode" id="calc-mode">
+    <section class="display" aria-label="Calculator display">
+      <div class="expression" id="expression" aria-label="Expression"></div>
+      <div class="result" id="result" aria-live="polite">0</div>
+      <div class="error" id="error" role="alert" hidden></div>
+    </section>
+
+    <aside class="history-panel" id="history-panel" hidden aria-label="Calculation history">
+      <div class="history-header">
+        <h2>History</h2>
+        <button type="button" class="history-clear" id="history-clear" aria-label="Clear history">Clear</button>
+      </div>
+      <ul class="history-list" id="history-list"></ul>
+      <p class="history-empty" id="history-empty">No calculations yet</p>
+    </aside>
+
+    <main class="keypad" id="keypad" role="group" aria-label="Calculator keypad">
+      <!-- Row: memory + mode -->
+      <button type="button" class="key key-fn" data-action="mc" aria-label="Memory clear">MC</button>
+      <button type="button" class="key key-fn" data-action="mr" aria-label="Memory recall">MR</button>
+      <button type="button" class="key key-fn" data-action="mplus" aria-label="Memory add">M+</button>
+      <button type="button" class="key key-fn" data-action="mminus" aria-label="Memory subtract">M−</button>
+      <button type="button" class="key key-fn" data-action="toggle-angle" aria-label="Toggle degree radian mode" id="btn-angle">DEG</button>
+
+      <!-- Row: 2nd + clear -->
+      <button type="button" class="key key-shift" data-action="second" aria-label="Second function layer" id="btn-second">2nd</button>
+      <button type="button" class="key key-fn" data-action="paren-open" aria-label="Open parenthesis">(</button>
+      <button type="button" class="key key-fn" data-action="paren-close" aria-label="Close parenthesis">)</button>
+      <button type="button" class="key key-danger" data-action="backspace" aria-label="Backspace">⌫</button>
+      <button type="button" class="key key-danger" data-action="ac" aria-label="All clear">AC</button>
+
+      <!-- Scientific row 1 -->
+      <button type="button" class="key key-sci"
+        data-insert="sin(" data-second-insert="asin(" data-second-label="sin⁻¹"
+        aria-label="Sine">sin</button>
+      <button type="button" class="key key-sci"
+        data-insert="cos(" data-second-insert="acos(" data-second-label="cos⁻¹"
+        aria-label="Cosine">cos</button>
+      <button type="button" class="key key-sci"
+        data-insert="tan(" data-second-insert="atan(" data-second-label="tan⁻¹"
+        aria-label="Tangent">tan</button>
+      <button type="button" class="key key-sci"
+        data-insert="ln(" data-second-insert="exp(" data-second-label="eˣ"
+        aria-label="Natural log">ln</button>
+      <button type="button" class="key key-sci"
+        data-insert="log(" data-second-insert="10^(" data-second-label="10ˣ"
+        aria-label="Log base 10">log</button>
+
+      <!-- Scientific row 2 -->
+      <button type="button" class="key key-sci"
+        data-insert="sinh(" data-second-insert="asinh(" data-second-label="sinh⁻¹"
+        aria-label="Hyperbolic sine">sinh</button>
+      <button type="button" class="key key-sci"
+        data-insert="cosh(" data-second-insert="acosh(" data-second-label="cosh⁻¹"
+        aria-label="Hyperbolic cosine">cosh</button>
+      <button type="button" class="key key-sci"
+        data-insert="tanh(" data-second-insert="atanh(" data-second-label="tanh⁻¹"
+        aria-label="Hyperbolic tangent">tanh</button>
+      <button type="button" class="key key-sci"
+        data-insert="√(" data-second-insert="∛(" data-second-label="∛"
+        aria-label="Square root">√</button>
+      <button type="button" class="key key-sci"
+        data-insert="^" data-second-insert="!" data-second-label="x!"
+        aria-label="Power">xʸ</button>
+
+      <!-- Scientific row 3 -->
+      <button type="button" class="key key-sci"
+        data-insert="^2" data-second-insert="^3" data-second-label="x³"
+        aria-label="Square">x²</button>
+      <button type="button" class="key key-sci"
+        data-insert="1/(" data-second-insert="abs(" data-second-label="|x|"
+        aria-label="Reciprocal">1/x</button>
+      <button type="button" class="key key-sci"
+        data-insert="π" data-second-insert="e" data-second-label="e"
+        aria-label="Pi">π</button>
+      <button type="button" class="key key-sci"
+        data-insert="%" data-second-insert="nPr(" data-second-label="nPr"
+        aria-label="Percent">%</button>
+      <button type="button" class="key key-sci"
+        data-insert="Ans" data-second-insert="nCr(" data-second-label="nCr"
+        aria-label="Answer">Ans</button>
+
+      <!-- Digits + ops -->
+      <button type="button" class="key key-num" data-insert="7" aria-label="7">7</button>
+      <button type="button" class="key key-num" data-insert="8" aria-label="8">8</button>
+      <button type="button" class="key key-num" data-insert="9" aria-label="9">9</button>
+      <button type="button" class="key key-op" data-insert="÷" aria-label="Divide">÷</button>
+      <button type="button" class="key key-op" data-action="negate" aria-label="Negate">+/−</button>
+
+      <button type="button" class="key key-num" data-insert="4" aria-label="4">4</button>
+      <button type="button" class="key key-num" data-insert="5" aria-label="5">5</button>
+      <button type="button" class="key key-num" data-insert="6" aria-label="6">6</button>
+      <button type="button" class="key key-op" data-insert="×" aria-label="Multiply">×</button>
+      <button type="button" class="key key-op" data-insert="−" aria-label="Subtract">−</button>
+
+      <button type="button" class="key key-num" data-insert="1" aria-label="1">1</button>
+      <button type="button" class="key key-num" data-insert="2" aria-label="2">2</button>
+      <button type="button" class="key key-num" data-insert="3" aria-label="3">3</button>
+      <button type="button" class="key key-op" data-insert="+" aria-label="Add">+</button>
+      <button type="button" class="key key-equals" data-action="equals" aria-label="Equals">=</button>
+
+      <button type="button" class="key key-num key-zero" data-insert="0" aria-label="0">0</button>
+      <button type="button" class="key key-num" data-insert="." aria-label="Decimal point">.</button>
+    </main>
+    </div><!-- /calc-mode -->
+
+    <div class="graph-mode" id="graph-mode" hidden>
+      <section class="y-editor" aria-label="Y equals editor">
+        <div class="y-editor-header">
+          <h2>Y=</h2>
+          <span class="graph-angle-note" id="graph-angle-note">Trig: DEG</span>
+        </div>
+        <div class="y-list" id="y-list"></div>
+      </section>
+
+      <section class="graph-plot-wrap" aria-label="Graph plot">
+        <canvas id="graph-canvas" width="320" height="280"></canvas>
+        <div class="trace-readout" id="trace-readout" hidden></div>
+      </section>
+
+      <div class="graph-toolbar" role="toolbar" aria-label="Graph controls">
+        <button type="button" class="gbtn" id="zoom-in" aria-label="Zoom in">In</button>
+        <button type="button" class="gbtn" id="zoom-out" aria-label="Zoom out">Out</button>
+        <button type="button" class="gbtn" id="zoom-std" aria-label="Zoom standard">ZStd</button>
+        <button type="button" class="gbtn" id="trace-toggle" aria-label="Trace mode" aria-pressed="false">Trace</button>
+      </div>
+      <div class="window-label" id="window-label">X:[-10, 10]  Y:[-10, 10]</div>
+      <p class="graph-hint">Drag to pan · tap for Trace · wheel to zoom</p>
+    </div>
+  </div>
+  <script src="math.js"></script>
+  <script src="graph.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
