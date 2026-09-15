@@ -1,6 +1,6 @@
 # Scientific / Graphing Calculator
 
-A polished, mobile-first calculator web app with **Calc** and **Graph** modes (TI-84 / Casio–inspired), in a clean modern dark UI.
+A polished, mobile-first calculator web app with **Calc** and **Graph** modes, in a clean modern dark UI.
 
 Plain HTML + CSS + vanilla JavaScript — no build step. Safe expression parser (no `eval()`).
 
